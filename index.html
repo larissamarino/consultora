@@ -41,6 +41,7 @@
     <meta name="description" content="Realize o sonho da sua moto Honda! Consórcio com as melhores condições. Encontre a moto perfeita para você. Simule agora e compre sua moto sem complicação.">
     
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style-carrossel.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
@@ -56,13 +57,116 @@
     </header>
     <main>
         <section class="info">
-            <h1>Consórcio Nacional Honda</h1>
+            <h1>Larissa Marino - Honda</h1>
             <img class="perfil-img" src="img/Perfil Chave.png" alt="Imagem da Consultora de Vendas">
             <p>Faça parte do <strong>Cónsorcio Nacional Honda</strong> e realize o seu sonho de ter uma moto nova! Entre em contato conosco agora mesmo e saiba mais sobre as vantagens do consórcio.</p>
             <a href="https://api.whatsapp.com/send?phone=+5527997581606&text=Olá, estou vindo do seu site e gostaria de mais informações sobre o Consórcio Nacional Honda." target="_blank" onclick="gtag_report_conversion">Fale conosco pelo WhatsApp</a>
         </section>
-
+        
         <section>
+            
+        <div class="moto-carousel" data-moto-name="CG 160">
+            <div class="carousel">
+                <div class="carousel-images">
+                    <img src="https://www.honda.com.br/motos/sites/hda/files/2024-10/honda-cg-160-titan-lateral-dianteira-direita-laranja.webp" alt="Moto 1">
+                    <img src="https://www.honda.com.br/motos/sites/hda/files/2024-10/honda-cg-160-titan-lateral-laranja.webp" alt="Moto 2">
+                    <img src="https://www.honda.com.br/motos/sites/hda/files/2024-10/honda-cg-160-titan-lateral-traseira-direita-laranja.webp" alt="Moto 3">
+                </div>
+                <div class="carousel-controls">
+                    <button class="prev">❮</button>
+                    <button class="next">❯</button>
+                </div>
+            </div>
+            <div class="content">
+                <h2>CG 160</h2>
+                <button class="openModal">Simular Financiamento ou Consórcio</button>
+            </div>
+        </div>
+
+        <div class="moto-carousel" data-moto-name="Honda Biz 125">
+            <div class="carousel">
+                <div class="carousel-images">
+                    <img src="https://www.honda.com.br/motos/sites/hda/files/2024-08/honda-biz-125-ex-lateral-azul.webp" alt="Moto 4">
+                    <img src="https://www.honda.com.br/motos/sites/hda/files/2024-08/honda-biz-125-ex-lateral-dianteiro-direito-azul.webp" alt="Moto 5">
+                    <img src="https://www.honda.com.br/motos/sites/hda/files/2024-08/honda-biz-125-ex-lateral-traseiro-direito-azul.webp" alt="Moto 6">
+                </div>
+                <div class="carousel-controls">
+                    <button class="prev">❮</button>
+                    <button class="next">❯</button>
+                </div>
+            </div>
+            <div class="content">
+                <h2>Honda Biz 125</h2>
+                <button class="openModal">Simular Financiamento ou Consórcio</button>
+            </div>
+        </div>
+    
+        <div class="moto-carousel" data-moto-name="NXR 160 Bros">
+            <div class="carousel">
+                <div class="carousel-images">
+                    <img src="https://www.honda.com.br/motos/sites/hda/files/2024-08/honda-nxr-bros-160-lateral-cinza.webp" alt="Moto 4">
+                    <img src="https://www.honda.com.br/motos/sites/hda/files/2024-08/honda-nxr-bros-160-lateral-dianteira-direita-cinza.webp" alt="Moto 5">
+                    <img src="https://www.honda.com.br/motos/sites/hda/files/2024-08/honda-nxr-bros-160-lateral-traseira-direita-cinza.webp" alt="Moto 6">
+                </div>
+                <div class="carousel-controls">
+                    <button class="prev">❮</button>
+                    <button class="next">❯</button>
+                </div>
+            </div>
+            <div class="content">
+                <h2>NXR 160 Bros</h2>
+                <button class="openModal">Simular Financiamento ou Consórcio</button>
+            </div>
+        </div>
+
+        <div id="motoModal" class="modal"> <!--Inicio Modal-->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Solicitar simulação</h2>
+                <form id="motoForm">
+                    <div class="form-group">
+                        <label for="moto">Motocicleta:</label>
+                        <input type="text" id="moto" name="moto" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="valorEntrada">Valor de Entrada:</label>
+                        <input type="number" id="valorEntrada" name="valorEntrada" placeholder="R$ 0,00" autofocus>
+                    </div>
+                    <div class="form-group">
+                        <label for="formaPagto">Financiamento ou Consórcio?</label>
+                        <select name="formaPagto" id="formaPagto">
+                            <option value="Financiamento">Financiamento</option>
+                            <option value="Consórcio">Consórcio</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dataNascimento">Data de Nascimento:</label>
+                        <input type="date" id="dataNascimento" name="dataNascimento">
+                    </div>
+                    <div class="form-group">
+                        <label for="cpf">CPF:</label>
+                        <input type="text" id="cpf" name="cpf" placeholder="111.111.111-11">
+                    </div>
+                    <div class="form-group">
+                        <label for="nomeCompleto">Nome Completo:</label>
+                        <input type="text" id="nomeCompleto" name="nomeCompleto" placeholder="Seu Nome Completo">
+                    </div>
+                    <div class="form-group">
+                        <label for="ddd">DDD:</label>
+                        <input type="text" id="ddd" name="ddd" placeholder="27">
+                    </div>
+                    <div class="form-group">
+                        <label for="celular">Celular:</label>
+                        <input type="tel" id="celular" name="celular" placeholder="9 9999-9999">
+                    </div>
+                    <button type="submit" class="btn-enviar" onclick="gerarLinkWhatsApp()">Enviar</button>
+                </form>
+            </div>
+        </div> <!--Fim do Modal-->
+
+            <h2>Não encontrou a moto que voce quer?</h2>
+            <a href="https://api.whatsapp.com/send?phone=+5527997581606&text=Olá, estou vindo do seu site e gostaria de mais informações sobre o Consórcio Nacional Honda." target="_blank" onclick="gtag_report_conversion">Solicite Aqui a Simulação</a>
+
             <h2>Não sabe como funciona o consórcio?</h2>
             
             <!--<iframe width="100%" height="315" src="https://www.youtube.com/embed/EffvazDMimY?start=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -99,6 +203,8 @@
     <footer>
 
     </footer>
+
+    <script src="script.js"></script>
 
 </body>
 </html>

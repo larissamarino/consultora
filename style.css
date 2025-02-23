@@ -38,6 +38,9 @@ main{
     gap: 2rem;
     padding: 2rem;
     min-width: 37.5rem;
+    max-width: 108rem;
+
+    margin: 0 auto;
 }
 
 section{
@@ -51,6 +54,7 @@ section{
 section h2{
     font-size: 2rem;
     line-height: 4.2rem; 
+    margin-top: 5rem;
 }
 
 /*ajuste perfil*/
