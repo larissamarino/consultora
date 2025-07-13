@@ -1,210 +1,541 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16878617331">
-    </script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    
-      gtag('config', 'AW-16878617331');
-    </script>
-
-    <!-- Event snippet for Enviar formulário de leads conversion page
-    In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
-    <script>
-    function gtag_report_conversion(url) {
-      var callback = function () {
-        if (typeof(url) != 'undefined') {
-          window.location = url;
-        }
-      };
-      gtag('event', 'conversion', {
-          'send_to': 'AW-16878617331/5v-4CLO6854aEPOFrfA-',
-          'event_callback': callback
-      });
-      return false;
-    }
-    </script>
-
-    
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Larissa Marino - Sua Consultora Honda</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
-    <title>Sua Moto Honda 0km | Consórcio Nacional Honda | Honca Moto Scarton | Larissa Marino</title>
-    <meta name="description" content="Realize o sonho da sua moto Honda! Consórcio com as melhores condições. Encontre a moto perfeita para você. Simule agora e compre sua moto sem complicação.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="style-carrossel.css">
-
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* bg-slate-50 */
+            color: #1e293b; /* text-slate-800 */
+        }
+        .hero-bg {
+            background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 1)), url('https://placehold.co/1920x1080/e2e8f0/cbd5e1?text=Garagem+Honda') no-repeat center center;
+            background-size: cover;
+        }
+        .modal-active {
+            display: flex;
+        }
+        .tab-active {
+            background-color: #dc2626 !important; /* red-600 */
+            color: #ffffff !important;
+            border-color: #dc2626 !important;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+        .carousel-btn:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .carousel-btn.prev {
+            left: 10px;
+        }
+        .carousel-btn.next {
+            right: 10px;
+        }
+    </style>
 </head>
-<body>
+<body class="antialiased">
 
-    <header>
-        <nav>
-            <a href="#">
-                <img src="img/LARISSA MARINO.png" alt="Larissa Marino - Consultora de Vendas Honda">
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-40 border-b border-slate-200">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-slate-900">
+                Larissa Marino <span class="text-red-600">| Honda</span>
             </a>
-        </nav>
+            <nav class="hidden md:flex items-center space-x-6 text-slate-700 font-medium">
+                <a href="#categorias" class="hover:text-red-600 transition-colors">Modelos</a>
+                <a href="#contato" class="hover:text-red-600 transition-colors">Contato</a>
+                <a href="https://wa.me/552797581606" target="_blank" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
+                    <span>WhatsApp</span>
+                </a>
+            </nav>
+            <button class="md:hidden text-slate-800" id="mobile-menu-button">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-4 pt-2 pb-4 space-y-2">
+            <a href="#categorias" class="block hover:text-red-600 transition-colors">Modelos</a>
+            <a href="#contato" class="block hover:text-red-600 transition-colors">Contato</a>
+            <a href="https://wa.me/5527997581606" target="_blank" class="block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-colors text-center">WhatsApp</a>
+        </div>
     </header>
-    <main>
-        <section class="info">
-            <h1>Larissa Marino - Honda</h1>
-            <img class="perfil-img" src="img/Perfil Chave.png" alt="Imagem da Consultora de Vendas">
-            <p>Faça parte do <strong>Cónsorcio Nacional Honda</strong> e realize o seu sonho de ter uma moto nova! Entre em contato conosco agora mesmo e saiba mais sobre as vantagens do consórcio.</p>
-            <a href="https://api.whatsapp.com/send?phone=+5527997581606&text=Olá, estou vindo do seu site e gostaria de mais informações sobre o Consórcio Nacional Honda." target="_blank" onclick="gtag_report_conversion">Fale conosco pelo WhatsApp</a>
-        </section>
-        
-        <section>
-            
-        <div class="moto-carousel" data-moto-name="CG 160">
-            <div class="carousel">
-                <div class="carousel-images">
-                    <img src="https://www.honda.com.br/motos/sites/hda/files/2024-10/honda-cg-160-titan-lateral-dianteira-direita-laranja.webp" alt="Moto 1">
-                    <img src="https://www.honda.com.br/motos/sites/hda/files/2024-10/honda-cg-160-titan-lateral-laranja.webp" alt="Moto 2">
-                    <img src="https://www.honda.com.br/motos/sites/hda/files/2024-10/honda-cg-160-titan-lateral-traseira-direita-laranja.webp" alt="Moto 3">
-                </div>
-                <div class="carousel-controls">
-                    <button class="prev">❮</button>
-                    <button class="next">❯</button>
-                </div>
-            </div>
-            <div class="content">
-                <h2>CG 160</h2>
-                <button class="openModal">Simular Financiamento ou Consórcio</button>
-            </div>
-        </div>
 
-        <div class="moto-carousel" data-moto-name="Honda Biz 125">
-            <div class="carousel">
-                <div class="carousel-images">
-                    <img src="https://www.honda.com.br/motos/sites/hda/files/2024-08/honda-biz-125-ex-lateral-azul.webp" alt="Moto 4">
-                    <img src="https://www.honda.com.br/motos/sites/hda/files/2024-08/honda-biz-125-ex-lateral-dianteiro-direito-azul.webp" alt="Moto 5">
-                    <img src="https://www.honda.com.br/motos/sites/hda/files/2024-08/honda-biz-125-ex-lateral-traseiro-direito-azul.webp" alt="Moto 6">
-                </div>
-                <div class="carousel-controls">
-                    <button class="prev">❮</button>
-                    <button class="next">❯</button>
-                </div>
+    <!-- Hero Section -->
+    <section class="hero-bg py-20 md:py-32">
+        <div class="container mx-auto px-4 text-center">
+            <div class="mb-4">
+                <img src="perfil.png" alt="Foto de Larissa Marino" class="w-36 h-36 rounded-full mx-auto border-4 border-red-600 shadow-lg">
             </div>
-            <div class="content">
-                <h2>Honda Biz 125</h2>
-                <button class="openModal">Simular Financiamento ou Consórcio</button>
-            </div>
+            <h1 class="text-4xl md:text-6xl font-black text-slate-900 uppercase tracking-wider leading-tight">
+                Realize o Sonho da sua <span class="text-red-600">Honda 0km</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-600 mt-4 max-w-3xl mx-auto">
+                Sou Larissa Marino, sua consultora especializada Honda. Encontre aqui as melhores condições para conquistar sua nova motocicleta.
+            </p>
+            <a href="#categorias" class="mt-8 inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-transform transform hover:scale-105">
+                Ver Modelos
+            </a>
         </div>
+    </section>
     
-        <div class="moto-carousel" data-moto-name="NXR 160 Bros">
-            <div class="carousel">
-                <div class="carousel-images">
-                    <img src="https://www.honda.com.br/motos/sites/hda/files/2024-08/honda-nxr-bros-160-lateral-cinza.webp" alt="Moto 4">
-                    <img src="https://www.honda.com.br/motos/sites/hda/files/2024-08/honda-nxr-bros-160-lateral-dianteira-direita-cinza.webp" alt="Moto 5">
-                    <img src="https://www.honda.com.br/motos/sites/hda/files/2024-08/honda-nxr-bros-160-lateral-traseira-direita-cinza.webp" alt="Moto 6">
-                </div>
-                <div class="carousel-controls">
-                    <button class="prev">❮</button>
-                    <button class="next">❯</button>
-                </div>
-            </div>
-            <div class="content">
-                <h2>NXR 160 Bros</h2>
-                <button class="openModal">Simular Financiamento ou Consórcio</button>
+    <!-- Categories Section -->
+    <section id="categorias" class="py-16 bg-slate-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-10 text-slate-800">Escolha a Categoria</h2>
+            <div id="category-filters" class="flex flex-wrap justify-center gap-3 md:gap-4">
+                <!-- Category buttons will be inserted here by JS -->
             </div>
         </div>
+    </section>
 
-        <div id="motoModal" class="modal"> <!--Inicio Modal-->
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Solicitar simulação</h2>
-                <form id="motoForm">
-                    <div class="form-group">
-                        <label for="moto">Motocicleta:</label>
-                        <input type="text" id="moto" name="moto" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="valorEntrada">Valor de Entrada:</label>
-                        <input type="number" id="valorEntrada" name="valorEntrada" placeholder="R$ 0,00" autofocus>
-                    </div>
-                    <div class="form-group">
-                        <label for="formaPagto">Financiamento ou Consórcio?</label>
-                        <select name="formaPagto" id="formaPagto">
-                            <option value="Financiamento">Financiamento</option>
-                            <option value="Consórcio">Consórcio</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="dataNascimento">Data de Nascimento:</label>
-                        <input type="date" id="dataNascimento" name="dataNascimento">
-                    </div>
-                    <div class="form-group">
-                        <label for="cpf">CPF:</label>
-                        <input type="text" id="cpf" name="cpf" placeholder="111.111.111-11">
-                    </div>
-                    <div class="form-group">
-                        <label for="nomeCompleto">Nome Completo:</label>
-                        <input type="text" id="nomeCompleto" name="nomeCompleto" placeholder="Seu Nome Completo">
-                    </div>
-                    <div class="form-group">
-                        <label for="ddd">DDD:</label>
-                        <input type="text" id="ddd" name="ddd" placeholder="27">
-                    </div>
-                    <div class="form-group">
-                        <label for="celular">Celular:</label>
-                        <input type="tel" id="celular" name="celular" placeholder="9 9999-9999">
-                    </div>
-                    <button type="submit" class="btn-enviar" onclick="gerarLinkWhatsApp()">Enviar</button>
-                </form>
-            </div>
-        </div> <!--Fim do Modal-->
-
-            <h2>Não encontrou a moto que voce quer?</h2>
-            <a href="https://api.whatsapp.com/send?phone=+5527997581606&text=Olá, estou vindo do seu site e gostaria de mais informações sobre o Consórcio Nacional Honda." target="_blank" onclick="gtag_report_conversion">Solicite Aqui a Simulação</a>
-
-            <h2>Não sabe como funciona o consórcio?</h2>
-            
-            <!--<iframe width="100%" height="315" src="https://www.youtube.com/embed/EffvazDMimY?start=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-            -->
-            
-            <iframe src="https://player.vimeo.com/video/851966228?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" width="100%" height="315" frameborder="0" allow="fullscreen; picture-in-picture" title="Video explicativo sobre o Consorcio Honda"></iframe>
-
-            <p>Te explico em detalhes logo abaixo.</p>
-
-            <ul>
-                <li>
-                    <img src="img/consortium-steps-1.svg" alt="Adquira sua cota de consórcio.">
-                    Adquira sua cota de consórcio.
-                </li>
-                <li>
-                    <img src="img/ico_institucional_02.svg" alt="Realize o pagamento das parcelas em dia.">
-                    Realize o pagamento das parcelas em dia.
-                </li>
-                <li>
-                    <img src="img/consortium-steps-3.svg" alt="Assembléias">
-                    Nas assembleias mensais, os participantes do Grupo podem ser contemplados por sorteio, lance fixo ou lance livre.
-                </li>
-                <li>
-                    <img src="img/ico_institucional_04.svg" alt="Encerramento do Grupo de consórcio">
-                    Até o encerramento do Grupo de consórcio, todos os participantes serão contemplados.
-                </li>
-            </ul>
-
-            <a href="https://api.whatsapp.com/send?phone=+5527997581606&text=Olá, estou vindo do seu site e tenho dúvidas sobre o consórcio, pode me ajudar?." target="_blank" onclick="gtag_report_conversion">Saiba Mais</a>
-
-        </section>
-
+    <!-- Motorcycles Section -->
+    <main class="container mx-auto px-4 py-16">
+        <div id="moto-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <!-- Motorcycle cards will be inserted here by JS -->
+        </div>
     </main>
-    <footer>
+    
+    <!-- Contact Section -->
+    <section id="contato" class="bg-slate-100 py-20">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-4">Fale Comigo</h2>
+            <p class="text-slate-600 mb-8 max-w-2xl mx-auto">Tire suas dúvidas ou solicite uma cotação. Estou à disposição para te ajudar a fazer o melhor negócio!</p>
+            <div class="flex justify-center items-center space-x-6">
+                <a href="https://wa.me/5527997581606" target="_blank" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition-transform transform hover:scale-105 flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
+                    <span>WhatsApp</span>
+                </a>
+                <a href="https://instagram.com/larissamarino" target="_blank" class="bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 hover:opacity-90 text-white font-bold py-3 px-6 rounded-lg transition-opacity flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.231s.008-2.389.046-3.232c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.843-.038 1.096-.047 3.232-.047zM8 4.905a3.095 3.095 0 1 0 0 6.19 3.095 3.095 0 0 0 0-6.19zm0 5.163a2.068 2.068 0 1 1 0-4.136 2.068 2.068 0 0 1 0 4.136zm4.965-5.572a.724.724 0 1 0 0 1.448.724.724 0 0 0 0-1.448z"/></svg>
+                    <span>Instagram</span>
+                </a>
+            </div>
+        </div>
+    </section>
 
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-slate-400 py-6">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; <span id="current-year"></span> Larissa Marino - Consultora de Vendas Honda. Todos os direitos reservados.</p>
+            <p class="text-sm mt-1">Site desenvolvido para fins de demonstração.</p>
+        </div>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- Moto Details Modal -->
+    <div id="moto-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
+            <button id="close-moto-modal" class="absolute top-3 right-4 text-slate-500 hover:text-red-600 text-4xl font-light">&times;</button>
+            <div id="moto-modal-content" class="p-6 md:p-8">
+                <!-- Content is populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Generic Contact Form Modal -->
+    <div id="contact-form-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto relative">
+            <button id="close-contact-modal" class="absolute top-3 right-4 text-slate-500 hover:text-red-600 text-4xl font-light">&times;</button>
+            <div id="contact-form-content" class="p-6 md:p-8">
+                <!-- Contact form is populated by JS -->
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- GLOBAL VARIABLES ---
+        let motorcycles = [];
+        let currentCarouselImages = [];
+        let currentCarouselIndex = 0;
+        const WHATSAPP_NUMBER = '5527997581606'; 
+
+        // --- DOM ELEMENTS ---
+        const motoGrid = document.getElementById('moto-grid');
+        const categoryFilters = document.getElementById('category-filters');
+        const currentYearSpan = document.getElementById('current-year');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        const motoModal = document.getElementById('moto-modal');
+        const motoModalContent = document.getElementById('moto-modal-content');
+        const closeMotoModalBtn = document.getElementById('close-moto-modal');
+        
+        const contactFormModal = document.getElementById('contact-form-modal');
+        const contactFormContent = document.getElementById('contact-form-content');
+        const closeContactModalBtn = document.getElementById('close-contact-modal');
+
+
+        // --- DATA HANDLING ---
+        
+        async function loadCSVData() {
+            try {
+                const response = await fetch('motos.csv');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const csvText = await response.text();
+                motorcycles = parseCSV(csvText);
+                
+                displayMotos(motorcycles);
+                displayCategoryFilters();
+
+            } catch (error) {
+                console.error("Erro ao carregar o arquivo motos.csv:", error);
+                motoGrid.innerHTML = `<p class="text-center text-red-600 col-span-full">Não foi possível carregar os dados das motocicletas. Verifique se o arquivo 'motos.csv' está na pasta correta.</p>`;
+            }
+        }
+
+        function parseCSV(text) {
+            const lines = text.trim().split(/\r?\n/);
+            if (lines.length < 2) return [];
+
+            const delimiter = lines[0].includes(';') ? ';' : ',';
+            const headers = lines[0].trim().split(delimiter).map(h => h.trim());
+            const result = [];
+            const valueRegex = new RegExp(`(".*?"|[^"${delimiter}\\r\\n]+)(?=\\s*${delimiter}|\\s*$)`, 'g');
+
+            for (let i = 1; i < lines.length; i++) {
+                if (!lines[i].trim()) continue;
+                const values = lines[i].match(valueRegex) || [];
+                
+                if (values.length !== headers.length) continue;
+
+                const obj = {};
+                for (let j = 0; j < headers.length; j++) {
+                    let value = values[j] ? values[j].trim().replace(/^"|"$/g, '') : '';
+                    const header = headers[j];
+                    if (header.endsWith('_json')) {
+                        try {
+                            value = JSON.parse(value.replace(/""/g, '"'));
+                        } catch (e) { value = (header === 'specs_json' ? {} : []); }
+                    }
+                    obj[header] = value;
+                }
+                result.push(obj);
+            }
+            return result;
+        }
+
+
+        // --- UI FUNCTIONS ---
+
+        function displayMotos(motosToDisplay) {
+            motoGrid.innerHTML = '';
+            motosToDisplay.forEach(moto => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl border border-slate-200 transition-all duration-300 transform hover:-translate-y-1 cursor-pointer';
+                card.dataset.motoId = moto.id;
+                // Use the first image of the array for the card, or a placeholder
+                const displayImage = (moto.images_json && moto.images_json.length > 0) ? moto.images_json[0] : 'https://placehold.co/600x400/e2e8f0/cbd5e1?text=Sem+Imagem';
+                card.innerHTML = `
+                    <img src="${displayImage}" alt="Imagem da ${moto.name}" class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold text-slate-800">${moto.name}</h3>
+                        <p class="text-sm text-red-600 font-semibold mb-3">${moto.category}</p>
+                        <p class="text-slate-600 text-sm">${moto.description}</p>
+                    </div>
+                `;
+                card.addEventListener('click', () => openMotoModal(moto.id));
+                motoGrid.appendChild(card);
+            });
+        }
+
+        function displayCategoryFilters() {
+            const categories = ['Todos', ...new Set(motorcycles.map(m => m.category))];
+            categoryFilters.innerHTML = categories.map((cat, index) => `
+                <button data-category="${cat}" class="category-btn ${index === 0 ? 'bg-red-600 text-white' : 'bg-white text-slate-700 border border-slate-300'} hover:bg-red-700 hover:text-white hover:border-red-700 font-semibold py-2 px-5 rounded-lg transition-colors text-sm md:text-base">
+                    ${cat}
+                </button>
+            `).join('');
+        }
+        
+        function openMotoModal(motoId) {
+            const moto = motorcycles.find(m => m.id == motoId);
+            if (!moto) return;
+
+            currentCarouselImages = (moto.images_json && moto.images_json.length > 0) ? moto.images_json : ['https://placehold.co/600x400/e2e8f0/cbd5e1?text=Sem+Imagem'];
+            currentCarouselIndex = 0;
+
+            const carouselHTML = `
+                <div class="relative">
+                    <img id="carousel-main-image" src="${currentCarouselImages[0]}" alt="Imagem da Motocicleta" class="w-full h-64 md:h-80 rounded-lg object-cover mb-2">
+                    ${currentCarouselImages.length > 1 ? `
+                        <button id="carousel-prev-btn" class="carousel-btn prev">&#10094;</button>
+                        <button id="carousel-next-btn" class="carousel-btn next">&#10095;</button>
+                    ` : ''}
+                </div>
+            `;
+
+            motoModalContent.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        ${carouselHTML}
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-bold text-slate-900 mb-2">${moto.name}</h2>
+                        <p class="text-red-600 font-semibold mb-6">${moto.category}</p>
+                        <div class="mb-6">
+                            <nav id="modal-tabs" class="grid grid-cols-3 gap-2" aria-label="Tabs">
+                                <button data-tab="specs" class="modal-tab py-3 px-2 font-bold text-sm transition-colors rounded-md border-2 border-slate-300 text-slate-600 bg-slate-100 hover:bg-red-600 hover:text-white hover:border-red-600">Ficha Técnica</button>
+                                <button data-tab="consortium" class="modal-tab py-3 px-2 font-bold text-sm transition-colors rounded-md border-2 border-slate-300 text-slate-600 bg-slate-100 hover:bg-red-600 hover:text-white hover:border-red-600">Consórcio</button>
+                                <button data-tab="financing" class="modal-tab py-3 px-2 font-bold text-sm transition-colors rounded-md border-2 border-slate-300 text-slate-600 bg-slate-100 hover:bg-red-600 hover:text-white hover:border-red-600">Financiamento</button>
+                            </nav>
+                        </div>
+                        <div id="tab-content-container">
+                            <div id="tab-content-specs" class="tab-content"></div>
+                            <div id="tab-content-consortium" class="tab-content hidden"></div>
+                            <div id="tab-content-financing" class="tab-content hidden"></div>
+                        </div>
+                    </div>
+                </div>`;
+            
+            motoModalContent.querySelector('#tab-content-specs').innerHTML = generateSpecsHTML(moto);
+            motoModalContent.querySelector('#tab-content-consortium').innerHTML = generateConsortiumHTML(moto);
+            motoModalContent.querySelector('#tab-content-financing').innerHTML = generateFinancingHTML(moto);
+
+            switchTab('specs');
+            motoModal.classList.remove('hidden');
+            motoModal.classList.add('modal-active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function updateCarouselImage() {
+            const imgElement = document.getElementById('carousel-main-image');
+            if (imgElement) {
+                imgElement.src = currentCarouselImages[currentCarouselIndex];
+            }
+        }
+
+        function generateSpecsHTML(moto) {
+            return `<ul class="space-y-2 text-sm">
+                ${Object.entries(moto.specs_json).map(([key, value]) => `
+                    <li class="flex justify-between border-b border-slate-200 py-2">
+                        <strong class="text-slate-600">${key}:</strong>
+                        <span class="text-slate-800 text-right">${value}</span>
+                    </li>
+                `).join('')}
+            </ul>
+            <div class="mt-6">
+                <button class="contact-trigger-btn w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg" data-type="compra" data-moto-name="${moto.name}">Quero Comprar</button>
+            </div>
+            `;
+        }
+
+        function generateConsortiumHTML(moto) {
+            return `<h4 class="font-bold text-lg mb-3 text-slate-800">Planos de Consórcio</h4>
+                <p class="text-sm text-slate-500 mb-4">Valores aproximados. Entre em contato para uma simulação exata.</p>
+                <table class="w-full text-sm text-left text-slate-600">
+                    <thead class="text-xs text-slate-700 uppercase bg-slate-100">
+                        <tr><th scope="col" class="px-4 py-3">Prazo</th><th scope="col" class="px-4 py-3">Valor da Parcela</th></tr>
+                    </thead>
+                    <tbody>
+                        ${moto.consortium_json.map(plan => `<tr class="bg-white border-b border-slate-200"><td class="px-4 py-4 font-medium text-slate-900">${plan.plan}</td><td class="px-4 py-4">${plan.value}</td></tr>`).join('')}
+                    </tbody>
+                </table>
+                 <div class="mt-6">
+                    <button class="contact-trigger-btn w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg" data-type="consorcio" data-moto-name="${moto.name}">Quero Comprar</button>
+                </div>
+                `;
+        }
+
+        function generateFinancingHTML(moto) {
+            return `<h4 class="font-bold text-lg mb-3 text-slate-800">Simular Financiamento</h4>
+                <p class="text-sm text-slate-500 mb-4">Para iniciar a simulação, clique no botão abaixo e preencha seus dados.</p>
+                <div class="mt-6">
+                    <button class="contact-trigger-btn w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg" data-type="financiamento" data-moto-name="${moto.name}">Fazer Simulação</button>
+                </div>
+            `;
+        }
+        
+        function switchTab(tabId) {
+            motoModalContent.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+            motoModalContent.querySelectorAll('.modal-tab').forEach(tab => tab.classList.remove('tab-active'));
+
+            motoModalContent.querySelector(`#tab-content-${tabId}`).classList.remove('hidden');
+            motoModalContent.querySelector(`.modal-tab[data-tab="${tabId}"]`).classList.add('tab-active');
+        }
+
+        function openContactFormModal(type, motoName) {
+            let formTitle, formFields, buttonText;
+
+            const baseFields = `
+                <div>
+                    <label for="contact-name" class="block text-sm font-medium text-slate-700">Nome Completo</label>
+                    <input type="text" name="name" id="contact-name" required class="mt-1 block w-full bg-slate-100 border-slate-300 rounded-md shadow-sm text-slate-900 focus:ring-red-500 focus:border-red-500 sm:text-sm">
+                </div>
+                <div>
+                    <label for="contact-phone" class="block text-sm font-medium text-slate-700">Telefone (com DDD)</label>
+                    <input type="tel" name="phone" id="contact-phone" required class="mt-1 block w-full bg-slate-100 border-slate-300 rounded-md shadow-sm text-slate-900 focus:ring-red-500 focus:border-red-500 sm:text-sm" placeholder="27999999999">
+                </div>
+            `;
+
+            if (type === 'financiamento') {
+                formTitle = `Simulação para ${motoName}`;
+                buttonText = 'Enviar para Simulação';
+                formFields = `
+                    ${baseFields}
+                    <div>
+                        <label for="contact-cpf" class="block text-sm font-medium text-slate-700">CPF</label>
+                        <input type="text" name="cpf" id="contact-cpf" required class="mt-1 block w-full bg-slate-100 border-slate-300 rounded-md shadow-sm text-slate-900 focus:ring-red-500 focus:border-red-500 sm:text-sm" placeholder="000.000.000-00">
+                    </div>
+                    <div>
+                        <label for="contact-birthdate" class="block text-sm font-medium text-slate-700">Data de Nascimento</label>
+                        <input type="date" name="birthdate" id="contact-birthdate" required class="mt-1 block w-full bg-slate-100 border-slate-300 rounded-md shadow-sm text-slate-900 focus:ring-red-500 focus:border-red-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="contact-entry-value" class="block text-sm font-medium text-slate-700">Valor de Entrada (R$)</label>
+                        <input type="number" name="entryValue" id="contact-entry-value" required class="mt-1 block w-full bg-slate-100 border-slate-300 rounded-md shadow-sm text-slate-900 focus:ring-red-500 focus:border-red-500 sm:text-sm" placeholder="10000">
+                    </div>
+                `;
+            } else {
+                formTitle = `Interesse em ${motoName}`;
+                buttonText = 'Enviar Contato';
+                formFields = baseFields;
+            }
+
+            contactFormContent.innerHTML = `
+                <h3 class="text-2xl font-bold text-slate-800 mb-2">${formTitle}</h3>
+                <p class="text-sm text-slate-500 mb-6">Preencha seus dados para continuar.</p>
+                <form id="contact-form" data-type="${type}" data-moto-name="${motoName}">
+                    <div class="space-y-4">
+                        ${formFields}
+                    </div>
+                    <div class="mt-8">
+                        <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                            ${buttonText}
+                        </button>
+                    </div>
+                </form>
+            `;
+
+            contactFormModal.classList.remove('hidden');
+            contactFormModal.classList.add('modal-active');
+        }
+
+        function handleContactFormSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+            const type = form.dataset.type;
+            const motoName = form.dataset.motoName;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            
+            const firstName = data.name.split(' ')[0];
+            let message = '';
+
+            if (type === 'compra') {
+                message = `Olá Larissa, me chamo ${firstName}, vim através do seu site e tenho interesse na moto ${motoName}, pode me chamar no ${data.phone}, que quero saber mais detalhes para a finalizar a compra!`;
+            } else if (type === 'consorcio') {
+                message = `Olá Larissa, me chamo ${firstName}, vim através do seu site e tenho interesse no consórcio da moto ${motoName}, pode me chamar no ${data.phone}, que quero saber mais detalhes para a finalizar a compra!`;
+            } else if (type === 'financiamento') {
+                message = `Olá Larissa, me chamo ${firstName}, vim através do seu site e tenho interesse no FINANCIAMENTO da moto ${motoName}, segue abaixo meus dados para aprovação:\n\nNome: ${data.name}\nValor de Entrada: R$ ${data.entryValue}\nCPF: ${data.cpf}\nTelefone: ${data.phone}`;
+            }
+
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+            
+            contactFormModal.classList.add('hidden');
+            contactFormModal.classList.remove('modal-active');
+        }
+
+
+        // --- EVENT LISTENERS ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCSVData();
+            currentYearSpan.textContent = new Date().getFullYear();
+        });
+
+        categoryFilters.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                const category = e.target.dataset.category;
+                document.querySelectorAll('.category-btn').forEach(btn => {
+                    btn.classList.remove('bg-red-600', 'text-white');
+                    btn.classList.add('bg-white', 'text-slate-700', 'border', 'border-slate-300');
+                });
+                e.target.classList.add('bg-red-600', 'text-white');
+                e.target.classList.remove('bg-white', 'text-slate-700', 'border', 'border-slate-300');
+                const filteredMotos = category === 'Todos' ? motorcycles : motorcycles.filter(m => m.category === category);
+                displayMotos(filteredMotos);
+            }
+        });
+
+        // Moto Modal Listeners
+        closeMotoModalBtn.addEventListener('click', () => {
+            motoModal.classList.add('hidden');
+            motoModal.classList.remove('modal-active');
+            document.body.style.overflow = 'auto';
+        });
+        motoModal.addEventListener('click', (e) => {
+            if (e.target === motoModal) {
+                motoModal.classList.add('hidden');
+                motoModal.classList.remove('modal-active');
+                document.body.style.overflow = 'auto';
+            }
+            if (e.target.matches('.modal-tab')) switchTab(e.target.dataset.tab);
+            if (e.target.matches('.contact-trigger-btn')) {
+                openContactFormModal(e.target.dataset.type, e.target.dataset.motoName);
+            }
+            if (e.target.id === 'carousel-next-btn') {
+                currentCarouselIndex = (currentCarouselIndex + 1) % currentCarouselImages.length;
+                updateCarouselImage();
+            }
+            if (e.target.id === 'carousel-prev-btn') {
+                currentCarouselIndex = (currentCarouselIndex - 1 + currentCarouselImages.length) % currentCarouselImages.length;
+                updateCarouselImage();
+            }
+        });
+
+        // Contact Form Modal Listeners
+        closeContactModalBtn.addEventListener('click', () => {
+            contactFormModal.classList.add('hidden');
+            contactFormModal.classList.remove('modal-active');
+        });
+        contactFormModal.addEventListener('click', (e) => {
+            if (e.target === contactFormModal) {
+                contactFormModal.classList.add('hidden');
+                contactFormModal.classList.remove('modal-active');
+            }
+        });
+        contactFormContent.addEventListener('submit', (e) => {
+             if (e.target.id === 'contact-form') handleContactFormSubmit(e);
+        });
+        
+        // Mobile menu toggle
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+    </script>
 
 </body>
 </html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Controle Visual - Catálogo de Motos</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9; /* bg-slate-100 */
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            border: 1px solid #cbd5e1; /* border-slate-300 */
+            background-color: #ffffff;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #ef4444; /* red-500 */
+            box-shadow: 0 0 0 2px #fecaca; /* red-200 */
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .btn {
+            font-weight: bold;
+            padding: 0.6rem 1rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s;
+            text-align: center;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background-color: #ef4444;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #dc2626;
+        }
+        .btn-secondary {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #2563eb;
+        }
+        .btn-success {
+            background-color: #22c55e;
+            color: white;
+        }
+        .btn-success:hover {
+            background-color: #16a34a;
+        }
+        .btn-danger {
+            background-color: #b91c1c;
+            color: white;
+        }
+        .btn-danger:hover {
+             background-color: #991b1b;
+        }
+        .moto-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        .moto-body.open {
+            max-height: 2500px; /* Increased for more content */
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body class="antialiased text-slate-800">
+
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-5">
+            <h1 class="text-3xl font-bold text-slate-900">
+                Painel de Controle Visual <span class="text-red-600">| Catálogo de Motos</span>
+            </h1>
+            <p class="text-slate-600 mt-1">Gerencie o catálogo de motocicletas do seu site de forma fácil e intuitiva.</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        
+        <div class="card mb-8">
+            <h2 class="text-2xl font-bold mb-2">Passo 1: Carregar Catálogo Existente</h2>
+            <p class="text-slate-600 mb-4">Selecione o seu arquivo <strong>motos.csv</strong> para começar a editar. Se não tiver um, pode pular e adicionar uma moto nova.</p>
+            <input type="file" id="csv-upload" accept=".csv" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100 cursor-pointer"/>
+        </div>
+
+        <div id="editor-panel" class="card mb-8">
+            <h2 class="text-2xl font-bold mb-4">Passo 2: Edite, Adicione ou Remova Motos</h2>
+            <div id="moto-forms-container" class="space-y-4">
+                <p class="text-slate-500">Carregue um arquivo .csv ou clique em "Adicionar Nova Moto" para começar.</p>
+            </div>
+            <div class="mt-6 border-t pt-6">
+                <button id="add-moto-btn" class="w-full btn btn-secondary">
+                    + Adicionar Nova Moto
+                </button>
+            </div>
+        </div>
+
+        <div id="export-panel" class="card hidden">
+            <h2 class="text-2xl font-bold mb-2">Passo 3: Baixe seu Novo Catálogo</h2>
+            <p class="text-slate-600 mb-4">Após editar, clique no botão abaixo para baixar o arquivo <strong>motos.csv</strong> atualizado. Salve-o na pasta do seu site, substituindo o antigo.</p>
+            <textarea id="csv-output" class="w-full p-2 rounded-md bg-slate-800 text-slate-100 font-mono text-sm min-h-[200px] hidden" readonly></textarea>
+            <button id="download-csv-btn" class="mt-4 w-full btn btn-success">
+                Baixar Arquivo motos.csv
+            </button>
+        </div>
+
+    </main>
+
+    <footer class="text-center py-6 text-slate-500 text-sm">
+        <p>Painel de Controle para o site da Larissa Marino.</p>
+    </footer>
+
+    <script>
+        // --- DOM ELEMENTS ---
+        const csvUploadInput = document.getElementById('csv-upload');
+        const editorPanel = document.getElementById('editor-panel');
+        const exportPanel = document.getElementById('export-panel');
+        const motoFormsContainer = document.getElementById('moto-forms-container');
+        const addMotoBtn = document.getElementById('add-moto-btn');
+        const downloadCsvBtn = document.getElementById('download-csv-btn');
+        const csvOutput = document.getElementById('csv-output');
+
+        const PREDEFINED_SPECS = ["Motor", "Cilindrada", "Potência Máxima", "Torque Máximo", "Transmissão", "Sistema de Partida", "Combustível", "Capacidade do Tanque"];
+
+        // --- CORE FUNCTIONS ---
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const csvText = e.target.result;
+                try {
+                    const motorcycles = parseCSV(csvText);
+                    if (motorcycles.length === 0 && csvText.trim() !== '') {
+                        alert('Nenhum dado válido foi encontrado. Verifique se o arquivo CSV não está vazio e se o formato (delimitador e aspas) está correto.');
+                        return;
+                    }
+                    populateForms(motorcycles);
+                    exportPanel.classList.remove('hidden');
+                    generateCSV(); 
+                } catch (error) {
+                    alert('Erro ao processar o arquivo CSV. Verifique o formato do arquivo.');
+                    console.error(error);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function parseCSV(text) {
+            const lines = text.trim().split(/\r?\n/);
+            if (lines.length < 2) return [];
+
+            const delimiter = lines[0].includes(';') ? ';' : ',';
+            const headers = lines[0].trim().split(delimiter).map(h => h.trim().replace(/"/g, ''));
+            const result = [];
+            
+            const valueRegex = new RegExp(`"(?:[^"]|"")*"|[^${delimiter}\\r\\n]+`, 'g');
+
+            for (let i = 1; i < lines.length; i++) {
+                if (!lines[i].trim()) continue;
+                
+                const values = lines[i].match(valueRegex) || [];
+                
+                if (values.length !== headers.length) {
+                    console.warn(`Skipping line ${i+1}: column mismatch. Expected ${headers.length}, got ${values.length}. Line content: ${lines[i]}`);
+                    continue;
+                }
+
+                const obj = {};
+                for (let j = 0; j < headers.length; j++) {
+                    let value = values[j] ? values[j].trim() : '';
+                    const header = headers[j];
+
+                    if (value.startsWith('"') && value.endsWith('"')) {
+                        value = value.slice(1, -1).replace(/""/g, '"');
+                    }
+                    
+                    if (header.endsWith('_json')) {
+                        try {
+                            value = JSON.parse(value);
+                        } catch (e) { 
+                            console.error(`Error parsing JSON on line ${i+1}, field ${header}:`, e, `Value: ${value}`);
+                            if (header === 'specs_json') value = {};
+                            else if (header === 'consortium_json' || header === 'images_json') value = [];
+                            else value = null;
+                        }
+                    }
+                    obj[header] = value;
+                }
+                result.push(obj);
+            }
+            return result;
+        }
+
+        function populateForms(motorcycles) {
+            motoFormsContainer.innerHTML = '';
+            motorcycles.forEach((moto) => {
+                motoFormsContainer.appendChild(createMotoForm(moto));
+            });
+        }
+
+        function createMotoForm(moto = {}) {
+            const formContainer = document.createElement('div');
+            formContainer.className = 'card-moto border border-slate-300 rounded-lg overflow-hidden';
+            
+            const specsHTML = PREDEFINED_SPECS.map(spec => `
+                <div>
+                    <label class="font-semibold text-sm">${spec}</label>
+                    <input type="text" value="${moto.specs_json?.[spec] || ''}" data-spec-key="${spec}" class="form-input mt-1">
+                </div>
+            `).join('');
+
+            const consortiumHTML = (moto.consortium_json || []).map((plan) => `
+                <div class="grid grid-cols-11 gap-2 consortium-plan-row">
+                    <div class="col-span-5"><input type="text" value="${plan.plan || ''}" class="form-input plan-key" placeholder="Ex: 60x"></div>
+                    <div class="col-span-5"><input type="text" value="${plan.value || ''}" class="form-input plan-value" placeholder="Ex: R$ 550,90"></div>
+                    <div class="col-span-1 flex items-end"><button type="button" class="btn-danger rounded-md w-full h-10 text-white font-bold remove-plan-btn">&times;</button></div>
+                </div>
+            `).join('');
+
+            const imagesHTML = (moto.images_json || []).map(imgUrl => `
+                <div class="flex items-center gap-2 image-url-row">
+                    <input type="text" value="${imgUrl || ''}" class="form-input image-url-input" placeholder="https://exemplo.com/imagem.jpg">
+                    <button type="button" class="btn-danger rounded-md h-10 px-3 text-white font-bold remove-image-btn">&times;</button>
+                </div>
+            `).join('');
+
+            formContainer.innerHTML = `
+                <div class="moto-header p-4 bg-slate-50 flex justify-between items-center cursor-pointer hover:bg-slate-200 transition-colors">
+                    <h4 class="text-lg font-bold text-slate-700">${moto.name || 'Nova Moto (Clique para editar)'}</h4>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm font-bold text-red-600">Editar</span>
+                        <button type="button" class="remove-moto-btn text-red-500 hover:text-red-700 font-bold text-2xl">&times;</button>
+                    </div>
+                </div>
+                <div class="moto-body border-t border-slate-200">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-4 text-red-600">Dados Gerais</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                            <div><label class="font-semibold text-sm">ID</label><input type="number" value="${moto.id || Date.now()}" data-field="id" class="form-input mt-1"></div>
+                            <div><label class="font-semibold text-sm">Nome do Modelo</label><input type="text" value="${moto.name || ''}" data-field="name" class="form-input mt-1 moto-name-input"></div>
+                            <div><label class="font-semibold text-sm">Categoria</label><input type="text" value="${moto.category || ''}" data-field="category" class="form-input mt-1"></div>
+                            <div class="md:col-span-2"><label class="font-semibold text-sm">Descrição</label><input type="text" value="${moto.description || ''}" data-field="description" class="form-input mt-1"></div>
+                        </div>
+
+                        <h3 class="text-xl font-bold mb-4 text-red-600">Imagens da Moto</h3>
+                        <div class="space-y-2 mb-6 image-urls-container">${imagesHTML}</div>
+                        <button type="button" class="add-image-btn text-sm btn btn-secondary w-full">Adicionar Imagem</button>
+                        
+                        <h3 class="text-xl font-bold my-4 text-red-600">Especificações Técnicas</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">${specsHTML}</div>
+
+                        <h3 class="text-xl font-bold mb-4 text-red-600">Planos de Consórcio</h3>
+                        <div class="space-y-2 consortium-plans-container">${consortiumHTML}</div>
+                        <button type="button" class="add-plan-btn mt-4 text-sm btn btn-secondary w-full">Adicionar Plano de Consórcio</button>
+                    </div>
+                </div>
+            `;
+            return formContainer;
+        }
+
+        function generateCSV() {
+            const delimiter = ';';
+            const headers = "id;name;category;description;specs_json;consortium_json;images_json";
+            const rows = [];
+            const forms = motoFormsContainer.querySelectorAll('.card-moto');
+
+            forms.forEach(form => {
+                const motoData = {};
+                form.querySelectorAll('[data-field]').forEach(input => motoData[input.dataset.field] = input.value);
+                
+                const specs = {};
+                form.querySelectorAll('[data-spec-key]').forEach(input => {
+                    if(input.value) specs[input.dataset.specKey] = input.value;
+                });
+                motoData.specs_json = JSON.stringify(specs);
+
+                const consortium = [];
+                form.querySelectorAll('.consortium-plan-row').forEach(row => {
+                    const plan = row.querySelector('.plan-key').value;
+                    const value = row.querySelector('.plan-value').value;
+                    if(plan && value) consortium.push({ plan, value });
+                });
+                motoData.consortium_json = JSON.stringify(consortium);
+
+                const images = [];
+                form.querySelectorAll('.image-url-input').forEach(input => {
+                    if (input.value) images.push(input.value);
+                });
+                motoData.images_json = JSON.stringify(images);
+                
+                rows.push(motoData);
+            });
+
+            const csvRows = rows.map(row => {
+                const values = [
+                    row.id,
+                    `"${row.name}"`,
+                    row.category,
+                    `"${row.description}"`,
+                    `"${row.specs_json.replace(/"/g, '""')}"`,
+                    `"${row.consortium_json.replace(/"/g, '""')}"`,
+                    `"${row.images_json.replace(/"/g, '""')}"`
+                ];
+                return values.join(delimiter);
+            });
+            
+            csvOutput.value = [headers, ...csvRows].join('\n');
+            if (rows.length > 0) {
+                exportPanel.classList.remove('hidden');
+            } else {
+                exportPanel.classList.add('hidden');
+            }
+        }
+
+        // --- EVENT LISTENERS ---
+
+        csvUploadInput.addEventListener('change', handleFileUpload);
+
+        addMotoBtn.addEventListener('click', () => {
+            if (motoFormsContainer.querySelector('p')) motoFormsContainer.innerHTML = '';
+            const newForm = createMotoForm();
+            motoFormsContainer.appendChild(newForm);
+            newForm.querySelector('.moto-body').classList.add('open');
+            exportPanel.classList.remove('hidden');
+        });
+
+        motoFormsContainer.addEventListener('input', (e) => {
+            if (e.target.classList.contains('moto-name-input')) {
+                e.target.closest('.card-moto').querySelector('.moto-header h4').textContent = e.target.value || 'Nova Moto';
+            }
+            generateCSV();
+        });
+        
+        motoFormsContainer.addEventListener('click', (e) => {
+            const card = e.target.closest('.card-moto');
+            if (!card) return;
+
+            if (e.target.closest('.moto-header')) card.querySelector('.moto-body').classList.toggle('open');
+            if (e.target.classList.contains('remove-moto-btn')) {
+                e.stopPropagation();
+                if (confirm('Tem certeza que deseja remover este moto?')) {
+                    card.remove();
+                    generateCSV();
+                }
+            }
+            if (e.target.classList.contains('add-image-btn')) {
+                const container = e.target.previousElementSibling;
+                const newImageRow = document.createElement('div');
+                newImageRow.className = 'flex items-center gap-2 image-url-row';
+                newImageRow.innerHTML = `
+                    <input type="text" class="form-input image-url-input" placeholder="https://exemplo.com/imagem.jpg">
+                    <button type="button" class="btn-danger rounded-md h-10 px-3 text-white font-bold remove-image-btn">&times;</button>
+                `;
+                container.appendChild(newImageRow);
+            }
+            if (e.target.classList.contains('remove-image-btn')) {
+                e.target.closest('.image-url-row').remove();
+                generateCSV();
+            }
+            if (e.target.classList.contains('add-plan-btn')) {
+                const container = e.target.previousElementSibling;
+                const newPlanRow = document.createElement('div');
+                newPlanRow.className = 'grid grid-cols-11 gap-2 consortium-plan-row';
+                newPlanRow.innerHTML = `
+                    <div class="col-span-5"><input type="text" class="form-input plan-key" placeholder="Ex: 60x"></div>
+                    <div class="col-span-5"><input type="text" class="form-input plan-value" placeholder="Ex: R$ 550,90"></div>
+                    <div class="col-span-1 flex items-end"><button type="button" class="btn-danger rounded-md w-full h-10 text-white font-bold remove-plan-btn">&times;</button></div>
+                `;
+                container.appendChild(newPlanRow);
+            }
+            if (e.target.classList.contains('remove-plan-btn')) {
+                e.target.closest('.consortium-plan-row').remove();
+                generateCSV();
+            }
+        });
+
+        downloadCsvBtn.addEventListener('click', () => {
+            const csvContent = csvOutput.value;
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            if (link.download !== undefined) { 
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", "motos.csv");
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        });
+
+    </script>
+</body>
+</html>
