@@ -74,7 +74,7 @@
             <nav class="hidden md:flex items-center space-x-6 text-slate-700 font-medium">
                 <a href="#categorias" class="hover:text-red-600 transition-colors">Modelos</a>
                 <a href="#contato" class="hover:text-red-600 transition-colors">Contato</a>
-                <a href="https://wa.me/552797581606" target="_blank" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center space-x-2">
+                <a href="https://wa.me/5527997581606" target="_blank" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-colors flex items-center space-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
                     <span>WhatsApp</span>
                 </a>
@@ -178,7 +178,7 @@
         let motorcycles = [];
         let currentCarouselImages = [];
         let currentCarouselIndex = 0;
-        const WHATSAPP_NUMBER = '5527997581606'; 
+        const WHATSAPP_NUMBER = '5527997581606'; // Substitua pelo número da Larissa
 
         // --- DOM ELEMENTS ---
         const motoGrid = document.getElementById('moto-grid');
@@ -305,9 +305,9 @@
                         <p class="text-red-600 font-semibold mb-6">${moto.category}</p>
                         <div class="mb-6">
                             <nav id="modal-tabs" class="grid grid-cols-3 gap-2" aria-label="Tabs">
-                                <button data-tab="specs" class="modal-tab py-3 px-2 font-bold text-sm transition-colors rounded-md border-2 border-slate-300 text-slate-600 bg-slate-100 hover:bg-red-600 hover:text-white hover:border-red-600">Ficha Técnica</button>
-                                <button data-tab="consortium" class="modal-tab py-3 px-2 font-bold text-sm transition-colors rounded-md border-2 border-slate-300 text-slate-600 bg-slate-100 hover:bg-red-600 hover:text-white hover:border-red-600">Consórcio</button>
-                                <button data-tab="financing" class="modal-tab py-3 px-2 font-bold text-sm transition-colors rounded-md border-2 border-slate-300 text-slate-600 bg-slate-100 hover:bg-red-600 hover:text-white hover:border-red-600">Financiamento</button>
+                                <button data-tab="specs" class="modal-tab py-3 px-1 sm:px-2 font-bold text-xs sm:text-sm transition-colors rounded-md border-2 border-slate-300 text-slate-600 bg-slate-100 hover:bg-red-600 hover:text-white hover:border-red-600">Ficha Técnica</button>
+                                <button data-tab="consortium" class="modal-tab py-3 px-1 sm:px-2 font-bold text-xs sm:text-sm transition-colors rounded-md border-2 border-slate-300 text-slate-600 bg-slate-100 hover:bg-red-600 hover:text-white hover:border-red-600">Consórcio</button>
+                                <button data-tab="financing" class="modal-tab py-3 px-1 sm:px-2 font-bold text-xs sm:text-sm transition-colors rounded-md border-2 border-slate-300 text-slate-600 bg-slate-100 hover:bg-red-600 hover:text-white hover:border-red-600">Financiamento</button>
                             </nav>
                         </div>
                         <div id="tab-content-container">
@@ -355,7 +355,7 @@
                 <p class="text-sm text-slate-500 mb-4">Valores aproximados. Entre em contato para uma simulação exata.</p>
                 <table class="w-full text-sm text-left text-slate-600">
                     <thead class="text-xs text-slate-700 uppercase bg-slate-100">
-                        <tr><th scope="col" class="px-4 py-3">Prazo</th><th scope="col" class="px-4 py-3">Valor da Parcela</th></tr>
+                        <tr><th scope="col" class="px-4 py-3">Plano</th><th scope="col" class="px-4 py-3">Valor da Parcela</th></tr>
                     </thead>
                     <tbody>
                         ${moto.consortium_json.map(plan => `<tr class="bg-white border-b border-slate-200"><td class="px-4 py-4 font-medium text-slate-900">${plan.plan}</td><td class="px-4 py-4">${plan.value}</td></tr>`).join('')}
