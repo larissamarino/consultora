@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Gerenciamento - Regras do Quiz</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9; /* bg-slate-100 */
+        }
+        .form-select {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            border: 1px solid #cbd5e1; /* border-slate-300 */
+            background-color: #ffffff;
+            transition: border-color 0.2s;
+        }
+        .form-select:focus {
+            outline: none;
+            border-color: #ef4444; /* red-500 */
+            box-shadow: 0 0 0 2px #fecaca; /* red-200 */
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .btn {
+            font-weight: bold;
+            padding: 0.6rem 1rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s;
+            text-align: center;
+            cursor: pointer;
+        }
+        .btn-success {
+            background-color: #22c55e;
+            color: white;
+        }
+        .btn-success:hover {
+            background-color: #16a34a;
+        }
+    </style>
+</head>
+<body class="antialiased text-slate-800">
+
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-5">
+            <h1 class="text-3xl font-bold text-slate-900">
+                Painel de Gerenciamento <span class="text-red-600">| Regras do Quiz</span>
+            </h1>
+            <p class="text-slate-600 mt-1">Defina o perfil de cliente para cada moto do seu catálogo.</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        
+        <div class="card mb-8">
+            <h2 class="text-2xl font-bold mb-2">Passo 1: Carregar Arquivos</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-2">Catálogo de Motos (Obrigatório)</label>
+                    <p class="text-sm text-slate-500 mb-2">Selecione seu arquivo <strong>motos.csv</strong> para montar o editor.</p>
+                    <input type="file" id="motos-upload" accept=".csv" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100 cursor-pointer"/>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-2">Arquivo de Regras (Opcional)</label>
+                    <p class="text-sm text-slate-500 mb-2">Selecione seu <strong>quiz_regras.csv</strong> para editar as regras existentes.</p>
+                    <input type="file" id="rules-upload" accept=".csv" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" disabled/>
+                </div>
+            </div>
+        </div>
+
+        <div id="editor-panel" class="card mb-8 hidden">
+            <h2 class="text-2xl font-bold mb-4">Passo 2: Atribuir Regras do Quiz</h2>
+            <div class="space-y-4" id="rules-container">
+                <!-- Rules will be generated here -->
+            </div>
+        </div>
+
+        <div id="export-panel" class="card hidden">
+            <h2 class="text-2xl font-bold mb-2">Passo 3: Gerar Arquivo de Regras</h2>
+            <p class="text-slate-600 mb-4">Após definir as regras, clique no botão para baixar o arquivo <strong>quiz_regras.csv</strong> pronto para usar no seu site.</p>
+            <button id="download-csv-btn" class="w-full btn btn-success">
+                Gerar e Baixar quiz_regras.csv
+            </button>
+        </div>
+
+    </main>
+
+    <footer class="text-center py-6 text-slate-500 text-sm">
+        <p>Painel de Controle para o site da Larissa Marino.</p>
+    </footer>
+
+    <script>
+        let motorcycles = [];
+
+        // --- DOM Elements ---
+        const motosUploadInput = document.getElementById('motos-upload');
+        const rulesUploadInput = document.getElementById('rules-upload');
+        const editorPanel = document.getElementById('editor-panel');
+        const exportPanel = document.getElementById('export-panel');
+        const rulesContainer = document.getElementById('rules-container');
+        const downloadCsvBtn = document.getElementById('download-csv-btn');
+        
+        // --- DATA HANDLING ---
+        function handleMotosUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const csvText = e.target.result;
+                try {
+                    motorcycles = parseMotosCSV(csvText);
+                    if (motorcycles.length > 0) {
+                        populateRulesEditor();
+                        editorPanel.classList.remove('hidden');
+                        exportPanel.classList.remove('hidden');
+                        rulesUploadInput.disabled = false; // Enable rules upload
+                    } else {
+                        alert('Nenhuma moto foi encontrada no arquivo. Verifique o conteúdo do motos.csv');
+                    }
+                } catch (error) {
+                    alert('Erro ao processar o arquivo motos.csv.');
+                    console.error(error);
+                }
+            };
+            reader.readAsText(file);
+        }
+        
+        function handleRulesUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const csvText = e.target.result;
+                try {
+                    const rules = parseRulesCSV(csvText);
+                    applyRulesToEditor(rules);
+                } catch (error) {
+                    alert('Erro ao processar o arquivo quiz_regras.csv.');
+                    console.error(error);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function parseMotosCSV(text) {
+            const lines = text.trim().split(/\r?\n/);
+            if (lines.length < 2) return [];
+            let headerLine = lines[0];
+            if (headerLine.charCodeAt(0) === 0xFEFF) headerLine = headerLine.slice(1);
+            const delimiter = headerLine.includes(';') ? ';' : ',';
+            const headers = headerLine.trim().split(delimiter).map(h => h.trim().replace(/"/g, ''));
+            const result = [];
+            for (let i = 1; i < lines.length; i++) {
+                if (!lines[i].trim()) continue;
+                const values = lines[i].match(new RegExp(`"(?:[^"]|"")*"|[^${delimiter}\\r\\n]+`, 'g')) || [];
+                if (values.length !== headers.length) continue;
+                const obj = {};
+                for (let j = 0; j < headers.length; j++) {
+                    let value = values[j] ? values[j].trim().replace(/^"|"$/g, '') : '';
+                    if (headers[j] === 'id') value = parseInt(value, 10);
+                    obj[headers[j]] = value;
+                }
+                result.push(obj);
+            }
+            return result;
+        }
+
+        function parseRulesCSV(text) {
+            const rules = [];
+            const lines = text.trim().split(/\r?\n/);
+            if (lines.length < 2) return rules;
+            let headerLine = lines[0];
+            if (headerLine.charCodeAt(0) === 0xFEFF) headerLine = headerLine.slice(1);
+            const delimiter = headerLine.includes(';') ? ';' : ',';
+            for (let i = 1; i < lines.length; i++) {
+                if (!lines[i].trim()) continue;
+                const parts = lines[i].split(delimiter).map(part => part.trim());
+                if (parts.length === 4) {
+                    rules.push({
+                        style: parts[0],
+                        usage: parts[1],
+                        level: parts[2],
+                        motoId: parseInt(parts[3], 10)
+                    });
+                }
+            }
+            return rules;
+        }
+
+        // --- UI LOGIC ---
+        function populateRulesEditor() {
+            rulesContainer.innerHTML = `
+                <div class="grid grid-cols-4 gap-4 font-bold p-2 bg-slate-100 rounded-t-lg">
+                    <div>Nome da Moto</div>
+                    <div>Estilo (Pergunta 1)</div>
+                    <div>Uso Principal (Pergunta 2)</div>
+                    <div>Nível (Pergunta 3)</div>
+                </div>
+            `;
+            motorcycles.forEach(moto => {
+                const ruleRow = document.createElement('div');
+                ruleRow.className = 'grid grid-cols-4 gap-4 p-2 border-b items-center rule-row';
+                ruleRow.dataset.motoId = moto.id;
+                ruleRow.innerHTML = `
+                    <div class="font-semibold">${moto.name}</div>
+                    <div>
+                        <select class="form-select style-select">
+                            <option value="">Selecione...</option>
+                            <option value="Urbano">Urbano</option>
+                            <option value="Aventura">Aventura</option>
+                            <option value="Off-Road">Off-Road</option>
+                            <option value="Esportividade">Esportividade</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select class="form-select usage-select">
+                            <option value="">Selecione...</option>
+                            <optgroup label="Urbano">
+                                <option value="Máxima Economia">Máxima Economia</option>
+                                <option value="Agilidade e Praticidade">Agilidade e Praticidade</option>
+                                <option value="Conforto e Tecnologia">Conforto e Tecnologia</option>
+                                <option value="Um Pouco Mais de Potência">Um Pouco Mais de Potência</option>
+                            </optgroup>
+                            <optgroup label="Aventura">
+                                <option value="Versatilidade Total">Versatilidade Total</option>
+                                <option value="Foco em Viagens Longas">Foco em Viagens Longas</option>
+                            </optgroup>
+                             <optgroup label="Off-Road">
+                                <option value="Qualquer Terreno">Qualquer Terreno</option>
+                                <option value="Força Bruta">Força Bruta</option>
+                            </optgroup>
+                            <optgroup label="Esportividade">
+                                <option value="Esportividade Urbana">Esportividade Urbana</option>
+                                <option value="Performance de Pista">Performance de Pista</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div>
+                        <select class="form-select level-select">
+                            <option value="">Selecione...</option>
+                            <option value="Iniciante">Iniciante</option>
+                            <option value="Intermediário">Intermediário</option>
+                            <option value="Experiente">Experiente</option>
+                            <option value="Qualquer">Qualquer</option>
+                        </select>
+                    </div>
+                `;
+                rulesContainer.appendChild(ruleRow);
+            });
+        }
+
+        function applyRulesToEditor(rules) {
+            const rulesMap = new Map();
+            rules.forEach(rule => {
+                if (!rulesMap.has(rule.motoId)) {
+                    rulesMap.set(rule.motoId, []);
+                }
+                rulesMap.get(rule.motoId).push(rule);
+            });
+
+            document.querySelectorAll('.rule-row').forEach(row => {
+                const motoId = parseInt(row.dataset.motoId, 10);
+                const motoRules = rulesMap.get(motoId);
+                if (motoRules && motoRules.length > 0) {
+                    // For simplicity, we apply the first rule found for a moto.
+                    // A more complex UI could handle multiple rules per moto.
+                    const rule = motoRules[0];
+                    row.querySelector('.style-select').value = rule.style;
+                    row.querySelector('.usage-select').value = rule.usage;
+                    row.querySelector('.level-select').value = rule.level;
+                }
+            });
+        }
+
+        function generateRulesCSV() {
+            const header = "Estilo;Uso;Nivel;id_moto";
+            const rows = [];
+            
+            document.querySelectorAll('.rule-row').forEach(row => {
+                const motoId = row.dataset.motoId;
+                const style = row.querySelector('.style-select').value;
+                const usage = row.querySelector('.usage-select').value;
+                const level = row.querySelector('.level-select').value;
+
+                if (motoId && style && usage && level) {
+                    rows.push(`${style};${usage};${level};${motoId}`);
+                }
+            });
+
+            if (rows.length === 0) {
+                alert('Nenhuma regra foi definida. Por favor, preencha todas as opções para pelo menos uma moto.');
+                return null;
+            }
+
+            return [header, ...rows].join('\n');
+        }
+
+        function downloadCSV() {
+            const csvContent = generateRulesCSV();
+            if (!csvContent) return;
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            if (link.download !== undefined) { 
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", "quiz_regras.csv");
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        // --- EVENT LISTENERS ---
+        motosUploadInput.addEventListener('change', handleMotosUpload);
+        rulesUploadInput.addEventListener('change', handleRulesUpload);
+        downloadCsvBtn.addEventListener('click', downloadCSV);
+
+    </script>
+</body>
+</html>

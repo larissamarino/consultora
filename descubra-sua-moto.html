@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descubra sua Moto Ideal - Larissa Marino Honda</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9; /* bg-slate-100 */
+            color: #1e293b; /* text-slate-800 */
+        }
+        .quiz-option {
+            border: 2px solid #e2e8f0; /* border-slate-200 */
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            background-color: white;
+            height: 100%;
+        }
+        .quiz-option:hover {
+            border-color: #fca5a5; /* red-300 */
+            transform: translateY(-2px);
+        }
+        .result-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-active {
+            display: flex;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-slate-900">
+                Larissa Marino <span class="text-red-600">| Honda</span>
+            </a>
+            <a href="index.html" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                Voltar ao Início
+            </a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12 md:py-20">
+        
+        <!-- Quiz Section -->
+        <section id="quiz-section">
+            <div class="text-center max-w-3xl mx-auto">
+                <h1 class="text-4xl md:text-5xl font-black text-slate-900">Descubra a <span class="text-red-600">Moto Perfeita</span> Para Você</h1>
+                <p class="text-lg text-slate-600 mt-4">Responda as perguntas abaixo e nosso sistema encontrará o modelo ideal para o seu perfil.</p>
+            </div>
+
+            <div id="quiz-container" class="mt-12 max-w-4xl mx-auto space-y-10">
+                <!-- Question 1: Style -->
+                <div id="question-1" class="question-step">
+                    <h3 class="text-2xl font-bold mb-4 text-center">1. Qual o seu estilo de pilotagem?</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="quiz-option" data-question="style" data-value="Urbano"><h4 class="font-bold text-lg">Urbano</h4></div>
+                        <div class="quiz-option" data-question="style" data-value="Aventura"><h4 class="font-bold text-lg">Aventura</h4></div>
+                        <div class="quiz-option" data-question="style" data-value="Off-Road"><h4 class="font-bold text-lg">Off-Road</h4></div>
+                        <div class="quiz-option" data-question="style" data-value="Esportividade"><h4 class="font-bold text-lg">Esportividade</h4></div>
+                    </div>
+                </div>
+
+                <!-- Question 2: Usage -->
+                <div id="question-2" class="question-step hidden">
+                    <h3 class="text-2xl font-bold mb-4 text-center">2. Dentro desse estilo, qual seu uso principal?</h3>
+                    <div id="dynamic-options-container-2" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                </div>
+
+                <!-- Question 3: Experience -->
+                <div id="question-3" class="question-step hidden">
+                    <h3 class="text-2xl font-bold mb-4 text-center">3. E qual seu nível de pilotagem?</h3>
+                    <div id="dynamic-options-container-3" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results-section" class="hidden">
+            <div class="text-center max-w-3xl mx-auto">
+                <h1 id="results-title" class="text-4xl md:text-5xl font-black text-slate-900"></h1>
+                <p class="text-lg text-slate-600 mt-4">Estes são os modelos que se encaixam no seu perfil. Clique em "Quero Saber Mais" para falar com a Larissa!</p>
+            </div>
+            <div id="results-grid" class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
+            <div class="text-center mt-12">
+                <button id="retake-quiz-btn" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-3 px-8 rounded-lg">
+                    Voltar ao Início
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-lg relative">
+            <button id="close-contact-modal" class="absolute top-3 right-4 text-slate-500 hover:text-red-600 text-4xl font-light">&times;</button>
+            <div class="p-8">
+                <h3 class="text-2xl font-bold text-slate-800 mb-2">Quase lá!</h3>
+                <p class="text-sm text-slate-500 mb-6">Preencha seus dados para falar com a Larissa sobre a sua moto nova.</p>
+                <form id="contact-form">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="contact-name" class="block text-sm font-medium text-slate-700">Seu Nome</label>
+                            <input type="text" name="name" id="contact-name" required class="mt-1 block w-full border-slate-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 sm:text-sm">
+                        </div>
+                        <div>
+                            <label for="contact-city" class="block text-sm font-medium text-slate-700">Sua Cidade</label>
+                            <input type="text" name="city" id="contact-city" required class="mt-1 block w-full border-slate-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 sm:text-sm">
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                            Enviar para o WhatsApp
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let motorcycles = [];
+        let quizRules = [];
+        let userAnswers = {};
+        let selectedMotoName = '';
+        const WHATSAPP_NUMBER = '27997581606';
+
+        // --- DOM Elements ---
+        const quizSection = document.getElementById('quiz-section');
+        const resultsSection = document.getElementById('results-section');
+        const resultsTitle = document.getElementById('results-title');
+        const resultsGrid = document.getElementById('results-grid');
+        const retakeQuizBtn = document.getElementById('retake-quiz-btn');
+        const contactModal = document.getElementById('contact-modal');
+        const contactForm = document.getElementById('contact-form');
+        const closeContactModalBtn = document.getElementById('close-contact-modal');
+        
+        // --- DATA HANDLING ---
+        async function loadCSVData(file, parser) {
+            try {
+                const response = await fetch(`${file}?v=${Date.now()}`);
+                if (!response.ok) throw new Error(`Network response for ${file}`);
+                const csvText = await response.text();
+                return parser(csvText);
+            } catch (error) {
+                console.error(`Error loading ${file}:`, error);
+                quizSection.innerHTML = `<p class="text-center text-red-600">Could not load data. Please try again later.</p>`;
+                return null;
+            }
+        }
+
+        function parseMotosCSV(text) {
+            const lines = text.trim().split(/\r?\n/);
+            if (lines.length < 2) return [];
+            let headerLine = lines[0];
+            if (headerLine.charCodeAt(0) === 0xFEFF) headerLine = headerLine.slice(1);
+            const delimiter = headerLine.includes(';') ? ';' : ',';
+            const headers = headerLine.trim().split(delimiter).map(h => h.trim().replace(/"/g, ''));
+            const result = [];
+            const valueRegex = new RegExp(`"(?:[^"]|"")*"|[^${delimiter}\\r\\n]+`, 'g');
+            for (let i = 1; i < lines.length; i++) {
+                if (!lines[i].trim()) continue;
+                const values = lines[i].match(valueRegex) || [];
+                if (values.length !== headers.length) continue;
+                const obj = {};
+                for (let j = 0; j < headers.length; j++) {
+                    let value = values[j] ? values[j].trim().replace(/^"|"$/g, '') : '';
+                    if (headers[j].endsWith('_json')) {
+                        try { value = JSON.parse(value.replace(/""/g, '"')); } catch (e) { value = []; }
+                    }
+                    if (headers[j] === 'id') value = parseInt(value, 10);
+                    obj[headers[j]] = value;
+                }
+                result.push(obj);
+            }
+            return result;
+        }
+
+        function parseRulesCSV(text) {
+            const rules = [];
+            const lines = text.trim().split(/\r?\n/);
+            if (lines.length < 2) return rules;
+            let headerLine = lines[0];
+            if (headerLine.charCodeAt(0) === 0xFEFF) headerLine = headerLine.slice(1);
+            const delimiter = headerLine.includes(';') ? ';' : ',';
+            for (let i = 1; i < lines.length; i++) {
+                if (!lines[i].trim()) continue;
+                const parts = lines[i].split(delimiter).map(part => part.trim());
+                if (parts.length === 4) {
+                    rules.push({
+                        style: parts[0],
+                        usage: parts[1],
+                        level: parts[2],
+                        motoId: parseInt(parts[3], 10)
+                    });
+                }
+            }
+            return rules;
+        }
+
+        // --- QUIZ LOGIC ---
+        function advanceQuiz(currentStep, nextStep) {
+            setTimeout(() => {
+                document.getElementById(`question-${currentStep}`).classList.add('hidden');
+                if (nextStep) {
+                    document.getElementById(`question-${nextStep}`).classList.remove('hidden');
+                } else {
+                    displayResults();
+                }
+            }, 300);
+        }
+
+        function handleQuestion1(event) {
+            const selectedOption = event.currentTarget;
+            userAnswers.style = selectedOption.dataset.value;
+            document.querySelectorAll('[data-question="style"]').forEach(opt => opt.classList.remove('selected'));
+            selectedOption.classList.add('selected');
+            populateQuestion2(userAnswers.style);
+            advanceQuiz(1, 2);
+        }
+
+        function populateQuestion2(style) {
+            const relevantRules = quizRules.filter(rule => rule.style === style);
+            const uniqueUsages = [...new Set(relevantRules.map(rule => rule.usage))];
+            const container = document.getElementById('dynamic-options-container-2');
+            container.innerHTML = '';
+            uniqueUsages.forEach(usage => {
+                const optionEl = document.createElement('div');
+                optionEl.className = 'quiz-option';
+                optionEl.dataset.question = 'usage';
+                optionEl.dataset.value = usage;
+                optionEl.innerHTML = `<h4 class="font-bold text-lg">${usage}</h4>`;
+                optionEl.addEventListener('click', handleQuestion2);
+                container.appendChild(optionEl);
+            });
+        }
+        
+        function handleQuestion2(event) {
+            const selectedOption = event.currentTarget;
+            userAnswers.usage = selectedOption.dataset.value;
+            document.querySelectorAll('[data-question="usage"]').forEach(opt => opt.classList.remove('selected'));
+            selectedOption.classList.add('selected');
+            populateQuestion3(userAnswers.style, userAnswers.usage);
+            advanceQuiz(2, 3);
+        }
+
+        function populateQuestion3(style, usage) {
+            const relevantRules = quizRules.filter(rule => rule.style === style && rule.usage === usage);
+            const uniqueLevels = [...new Set(relevantRules.map(rule => rule.level))];
+            const container = document.getElementById('dynamic-options-container-3');
+            container.innerHTML = '';
+            uniqueLevels.forEach(level => {
+                const optionEl = document.createElement('div');
+                optionEl.className = 'quiz-option';
+                optionEl.dataset.question = 'experience';
+                optionEl.dataset.value = level;
+                optionEl.innerHTML = `<h4 class="font-bold text-lg">${level}</h4>`;
+                optionEl.addEventListener('click', handleQuestion3);
+                container.appendChild(optionEl);
+            });
+        }
+
+        function handleQuestion3(event) {
+            const selectedOption = event.currentTarget;
+            userAnswers.experience = selectedOption.dataset.value;
+            document.querySelectorAll('[data-question="experience"]').forEach(opt => opt.classList.remove('selected'));
+            selectedOption.classList.add('selected');
+            advanceQuiz(3, null);
+        }
+
+        function displayResults() {
+            const matchingRules = quizRules.filter(rule => 
+                rule.style === userAnswers.style && 
+                rule.usage === userAnswers.usage &&
+                (rule.level === userAnswers.experience || rule.level === 'Qualquer')
+            );
+
+            const motoIds = matchingRules.map(rule => rule.motoId);
+            const finalMotos = motorcycles.filter(moto => motoIds.includes(moto.id));
+
+            resultsTitle.innerHTML = `Modelos para o seu Perfil`;
+            resultsGrid.innerHTML = '';
+
+            if (finalMotos.length === 0) {
+                resultsGrid.innerHTML = `<p class="text-center text-slate-600 col-span-full">Nenhum modelo encontrado para este perfil. Tente outra combinação!</p>`;
+            } else {
+                finalMotos.forEach(moto => {
+                    const displayImage = (moto.images_json && moto.images_json.length > 0) ? moto.images_json[0] : 'https://placehold.co/600x400/e2e8f0/cbd5e1?text=Sem+Imagem';
+                    const card = document.createElement('div');
+                    card.className = 'result-card';
+                    card.innerHTML = `
+                        <img src="${displayImage}" alt="Imagem da ${moto.name}" class="w-full h-48 object-cover">
+                        <div class="p-5 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold text-slate-800">${moto.name}</h3>
+                            <p class="text-slate-600 text-sm mt-2 flex-grow">${moto.description}</p>
+                            <button class="contact-btn mt-4 w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" data-moto-name="${moto.name}">
+                                Quero Saber Mais
+                            </button>
+                        </div>
+                    `;
+                    resultsGrid.appendChild(card);
+                });
+            }
+            quizSection.classList.add('hidden');
+            resultsSection.classList.remove('hidden');
+        }
+
+        function resetQuiz() {
+            userAnswers = {};
+            document.querySelectorAll('.question-step').forEach((step, index) => {
+                step.classList.add('hidden');
+                if (index === 0) step.classList.remove('hidden');
+            });
+            resultsSection.classList.add('hidden');
+            quizSection.classList.remove('hidden');
+        }
+
+        function handleContactClick(event) {
+            // CORREÇÃO: Usar event.target em vez de event.currentTarget
+            selectedMotoName = event.target.dataset.motoName;
+            contactModal.classList.remove('hidden');
+            contactModal.classList.add('modal-active');
+        }
+
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            const city = document.getElementById('contact-city').value;
+            
+            const message = `Olá Larissa, me chamo ${name}, falo de ${city} e tenho interesse na ${selectedMotoName}! Gostaria de saber mais.`;
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+            
+            window.open(whatsappUrl, '_blank');
+            contactModal.classList.add('hidden');
+            contactModal.classList.remove('modal-active');
+        }
+
+        // --- EVENT LISTENERS ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            [motorcycles, quizRules] = await Promise.all([
+                loadCSVData('motos.csv', parseMotosCSV),
+                loadCSVData('quiz_regras.csv', parseRulesCSV)
+            ]);
+        });
+        document.querySelectorAll('[data-question="style"]').forEach(option => option.addEventListener('click', handleQuestion1));
+        retakeQuizBtn.addEventListener('click', resetQuiz);
+        
+        resultsGrid.addEventListener('click', (event) => {
+            if (event.target.classList.contains('contact-btn')) {
+                handleContactClick(event);
+            }
+        });
+
+        closeContactModalBtn.addEventListener('click', () => {
+            contactModal.classList.add('hidden');
+            contactModal.classList.remove('modal-active');
+        });
+        contactForm.addEventListener('submit', handleContactSubmit);
+
+    </script>
+
+</body>
+</html>
